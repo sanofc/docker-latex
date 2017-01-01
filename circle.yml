@@ -5,18 +5,29 @@ machine:
     - docker
 
 dependencies:
-  override:
-    - docker info
-    - docker build -t ogajun/latex .
-
+#  override:
+#    - docker info
+#    - docker build -t ogajun/latex .
+   pre:
+    - docker pull ogajun/latex
+    - git config --global user.email sanofc@gmail.com
+    - git config --global user.name sanofc
 test:
   override:
     - cd ~/docker-latex
     - ./latex_build.sh example ./tex_src
 
 deployment:
-  hub:
-    branch: master
+  release:
+    branch:master
     commands:
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push sanofc/latex
+      - cd ~/docker-latex
+      - git checkout -b release
+      - git add --all :/
+      - git commit -m "[ci skip] build pdf"
+      - git push -f origin release
+  #hub:
+  #  branch: master
+  #  commands:
+  #    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  #    - docker push sanofc/latex
