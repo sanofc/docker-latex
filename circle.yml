@@ -26,6 +26,7 @@ deployment:
       - git add --all :/
       - git commit -m "[ci skip] build pdf"
       - git push -f origin release
+  
   #hub:
   #  branch: master
   #  commands:
